@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace MessageFormattingApp {
     static class Program {
-        private delegate void SMSReceivedHandler(string message);
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -15,8 +14,7 @@ namespace MessageFormattingApp {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           Application.Run(new MessageFormatting());
+            Application.Run(new MessageFormatting());
         }
-
     }
 }
