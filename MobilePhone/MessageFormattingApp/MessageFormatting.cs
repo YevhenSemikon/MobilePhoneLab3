@@ -21,38 +21,38 @@ namespace MessageFormattingApp {
 
         public MessageFormatting() {
             InitializeComponent();
-            this.comboBox1.DrawMode = DrawMode.OwnerDrawFixed;
-            this.comboBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBox1_DrawItem);
+            this.FormattingListComboBox.DrawMode = DrawMode.OwnerDrawFixed;
+            this.FormattingListComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.FormattingListComboBox_DrawItem);
             mobile.SMSProvider.SMSReceived += ShowMessage;
             SMSProvider.SMSStartSendingDelegate startDel = mobile.SMSProvider.ReceiveMessage;
             startDel.BeginInvoke(100, null, null);
         }
         public void ShowMessage(string message) {
-            if (richTextBox1.InvokeRequired) { Invoke(new SMSProvider.SMSReceivedDelegate(ShowMessage), message); }
+            if (OutputMessageRichTextBox.InvokeRequired) { Invoke(new SMSProvider.SMSReceivedDelegate(ShowMessage), message); }
             else {
                 string formattedMessage = Formatter(message);
-                richTextBox1.AppendText($"{formattedMessage}{ Environment.NewLine}");
-                if (checkBox1.Checked) {
-                    richTextBox1.ScrollToCaret();
+                OutputMessageRichTextBox.AppendText($"{formattedMessage}{ Environment.NewLine}");
+                if (AutoScrollCheckBox.Checked) {
+                    OutputMessageRichTextBox.ScrollToCaret();
                 }
             }
         }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            disabledItemIndex = comboBox1.SelectedIndex;
-            string itemName = comboBox1.SelectedItem.ToString();
+        private void FormattingListComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+            disabledItemIndex = FormattingListComboBox.SelectedIndex;
+            string itemName = FormattingListComboBox.SelectedItem.ToString();
             if (itemName == "None") { Formatter = SMSProvider.NoneFormat; }
             else if (itemName == "Start with Date") { Formatter = SMSProvider.StartWithDate; }
             else if (itemName == "End with Date") { Formatter = SMSProvider.EndWithDate; }
             else if (itemName == "UpperCase") { Formatter = SMSProvider.UpperFormat; }
             else if (itemName == "LowerCase") { Formatter = SMSProvider.LowerFormat; }
         }
-        private void comboBox1_DrawItem(object sender, DrawItemEventArgs e) {
+        private void FormattingListComboBox_DrawItem(object sender, DrawItemEventArgs e) {
             if (e.Index == disabledItemIndex) {
-                e.Graphics.DrawString(comboBox1.Items[e.Index].ToString(), myFont, Brushes.Gray, e.Bounds);
+                e.Graphics.DrawString(FormattingListComboBox.Items[e.Index].ToString(), myFont, Brushes.Gray, e.Bounds);
             }
             else {
                 e.DrawBackground();
-                e.Graphics.DrawString(comboBox1.Items[e.Index].ToString(), myFont, Brushes.Black, e.Bounds);
+                e.Graphics.DrawString(FormattingListComboBox.Items[e.Index].ToString(), myFont, Brushes.Black, e.Bounds);
                 e.DrawFocusRectangle();
             }
         }
